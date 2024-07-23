@@ -9,6 +9,7 @@ public class MainPage {
     private static final String MAIN_PAGE_URL = "https://qa-scooter.praktikum-services.ru/";
     private static final By FAQ_BUTTON_XPATH = By.xpath("//div[@class='accordion__button']");
     private static final By FAQ_ANSWER_XPATH = By.xpath("//div[@class='accordion__panel']");
+    private static final By ORDER_BUTTON_XPATH = By.xpath("//div[contains(@class, 'Header')]//button[@class='Button_Button__ra12g']");
 
 
 
@@ -30,5 +31,9 @@ public class MainPage {
 
     public boolean isDisplayedFaqAnswer(int buttonNumber) {
         return driver.findElements(FAQ_ANSWER_XPATH).get(buttonNumber - 1).isDisplayed();
+    }
+
+    public void clickOrderButton() {
+        driver.findElement(ORDER_BUTTON_XPATH).click();
     }
 }
