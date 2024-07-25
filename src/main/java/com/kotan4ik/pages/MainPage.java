@@ -23,6 +23,10 @@ public class MainPage {
         driver.get(MAIN_PAGE_URL);
     }
 
+    public void acceptCookies() {
+        driver.findElement(By.id("rcc-confirm-button")).click();
+    }
+
     public void clickFaqButton(int buttonNumber) {
         WebElement element = driver.findElements(FAQ_BUTTON_XPATH).get(buttonNumber - 1);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);

@@ -17,8 +17,6 @@ public class OrderPage {
     private static final By SUBWAY_STATION_OPTION_CSS = By.cssSelector(".select-search__row");
     private static final By BUTTON_NEXT_CLASS = By.className("Button_Middle__1CSJM");
     private static final By DATE_FIELD_CSS = By.cssSelector(".react-datepicker__input-container input");
-    private static final By CALENDAR_CSS = By.cssSelector(".react-datepicker");
-    private static final By VISIBLE_DATES_CSS = By.cssSelector(".react-datepicker__day--001");
     private static final By RENTAL_DURATION_CSS = By.cssSelector(".Dropdown-control");
     private static final By RENTAL_DURATION_DROPDOWN_CSS = By.cssSelector(".Dropdown-option");
     private static final By COLOR_SELECT_GREY_ID = By.id("grey");
@@ -59,15 +57,14 @@ public class OrderPage {
         driver.findElement(BUTTON_NEXT_CLASS).click();
     }
 
-    public void chooseFirstAvailableDate() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        wait.until(ExpectedConditions.elementToBeClickable(DATE_FIELD_CSS)).click();
-        WebElement datePicker = wait.until(ExpectedConditions.visibilityOfElementLocated(CALENDAR_CSS));
-        List<WebElement> availableDates = datePicker.findElements(VISIBLE_DATES_CSS);
-            availableDates.get(0).click();
+    public void setRentDate(String date) {
+        driver.findElement(DATE_FIELD_CSS).sendKeys(date);
+        driver.findElement(By.cssSelector("body")).click();
     }
 
     public void chooseDaysForRent(int numberOfDays) {
+        if (numberOfDays < 1)
+            numberOfDays = 1;
         if (numberOfDays > 7)
             numberOfDays =7;
         driver.findElement(RENTAL_DURATION_CSS).click();
@@ -88,6 +85,6 @@ public class OrderPage {
     }
 
     public boolean checkOrderConfirmed() {
-        return driver.findElement(CONFIRMATION_HEADER_CLASS).isDisplayed();
+        return driver.findElement(CONFIRMATION_HEADER_CLASS).getText().contains("Заказ оформлен");
     }
 }
