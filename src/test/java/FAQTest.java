@@ -9,17 +9,18 @@ import org.openqa.selenium.WebDriver;
 
 public class FAQTest {
     private WebDriver driver;
+    private MainPage mainPage;
 
     @Before
     public void setUp() {
         driver = WebDriverFactory.getDriver();
+        mainPage = new MainPage(driver);
+        mainPage.openPage();
+        mainPage.acceptCookies();
     }
 
     @Test
     public void testFaqExpandsAnswerOnQuestionClickSuccess() {
-        MainPage mainPage = new MainPage(driver);
-        mainPage.openPage();
-        mainPage.acceptCookies();
         int numberOfButtons = mainPage.getNumberOfFaqButtons();
         boolean[] isDisplayed = new boolean[numberOfButtons];
         for (int i = 1; i <= numberOfButtons; i++) {
