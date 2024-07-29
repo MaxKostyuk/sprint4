@@ -16,12 +16,26 @@ public class FAQTest {
     }
 
     @Test
-    public void testFaqExpandsAnswerOnQuestionClick_success() {
+    public void testFaqExpandsAnswerOnQuestionClickSuccess() {
         MainPage mainPage = new MainPage(driver);
         mainPage.openPage();
-        mainPage.clickFaqButton(1);
-        boolean isDisplayed = mainPage.isDisplayedFaqAnswer(1);
-        Assert.assertTrue("FAQ answer is not displayed", isDisplayed);
+        mainPage.acceptCookies();
+        int numberOfButtons = mainPage.getNumberOfFaqButtons();
+        boolean[] isDisplayed = new boolean[numberOfButtons];
+        for (int i = 1; i <= numberOfButtons; i++) {
+            mainPage.clickFaqButton(i);
+            isDisplayed[i -1] = mainPage.isDisplayedFaqAnswer(i);
+        }
+        int j = 1;
+        boolean allDisplayed = true;
+        for (boolean displayed : isDisplayed) {
+            if (!displayed) {
+                allDisplayed = false;
+                break;
+            }
+            j++;
+        }
+        Assert.assertTrue("FAQ answer[" + j + "] is not displayed", allDisplayed);
     }
 
     @After

@@ -4,13 +4,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MainPage {
     private static final String MAIN_PAGE_URL = "https://qa-scooter.praktikum-services.ru/";
     private static final By FAQ_BUTTON_XPATH = By.xpath("//div[@class='accordion__button']");
     private static final By FAQ_ANSWER_XPATH = By.xpath("//div[@class='accordion__panel']");
     private static final By ORDER_BUTTON_XPATH = By.xpath("//div[contains(@class, 'Header')]//button[@class='Button_Button__ra12g']");
-
 
 
     private final WebDriver driver;
@@ -27,14 +28,26 @@ public class MainPage {
         driver.findElement(By.id("rcc-confirm-button")).click();
     }
 
+    public int getNumberOfFaqButtons() {
+        return driver.findElements(FAQ_BUTTON_XPATH).size();
+    }
+
     public void clickFaqButton(int buttonNumber) {
         WebElement element = driver.findElements(FAQ_BUTTON_XPATH).get(buttonNumber - 1);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView();", element);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
         element.click();
     }
 
     public boolean isDisplayedFaqAnswer(int buttonNumber) {
-        return driver.findElements(FAQ_ANSWER_XPATH).get(buttonNumber - 1).isDisplayed();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement element = driver.findElements(FAQ_ANSWER_XPATH).get(buttonNumber - 1);
+        js.executeScript("arguments[0].scrollIntoView();", element);
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        wait.until(ExpectedConditions.visibilityOf(element));
+        return element.isDisplayed();
     }
 
     public void clickOrderButton() {
